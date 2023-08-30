@@ -1,10 +1,12 @@
 const favouritesProduct = require("./../models/favouritesProducts.model")
 // const mongoose = require('mongoose');
 const router = require("express").Router()
+const {isAuthenticated} = require("./../middleware/jwt.middleware")
 
-router.post("/favouritesProducts", async (req, res, next) => {
+router.post("/favouritesProducts", isAuthenticated, async (req, res, next) => {
 	try {
-		let { userId, productId, added   } = req.body
+		let { productId, added   } = req.body
+		const userId = req.payload._id
 		if (!userId) {
 			return res
 				.status(400)

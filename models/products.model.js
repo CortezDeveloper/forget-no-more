@@ -5,17 +5,17 @@ const productSchema = mongoose.Schema({
         type : String,
         required: true
     },
-    category:{
-        type : [String],
-        required: true
-    },
+    // category:{
+    //     type : [String],
+    //     required: true
+    // },
     price:{
         type: Number,
         require: true, 
         default: 0
     },
     image:{
-        type : [String]
+        type : String
     },
     description:{
         type : String,

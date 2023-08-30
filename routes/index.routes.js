@@ -7,5 +7,7 @@ const router = express.Router();
 
 router.use("/user", require("./user.routes"))
 router.use("/products", require("./products.routes"))
+router.use("/favourites", require("./favouritesProducts.routes"))
+// router.use("/createproducts", require("./createproduct.routes") )
 
 module.exports = router;

@@ -9,11 +9,11 @@ router.post("/", async (req, res, next) => {
 				.status(400)
 				.json({ message: "We need a name for this product" })
 		}
-        if (!category) {
-			return res
-				.status(400)
-				.json({ message: "We need a category for this product" })
-		}
+        // if (!category) {
+		// 	return res
+		// 		.status(400)
+		// 		.json({ message: "We need a category for this product" })
+		// }
 		if (!price) {
 			return res
 				.status(400)
@@ -27,12 +27,22 @@ router.post("/", async (req, res, next) => {
 	}
 })
 
+router.get("/", async (req, res, next) => {
+		Product.find({})
+			.then((allProducts) => {
+				res.status(200).json(allProducts)
+			})
+			.catch((error) => {
+				// res.status(500).json({message:"Error to get all products"})
+				next(error)
+			})
+	})
+
+
+
 router.get("/:productId", async (req, res) => {
 	try {
-		const oneProduct = await Product.findById(req.params.productId, {
-			name: 1,
-			_id: 0,
-		}).populate("product")
+		const oneProduct = await Product.findById(req.params.productId)
 		res.json(oneProduct)
 	} catch (error) {
 		console.log(error)
@@ -45,6 +55,19 @@ router.delete("/:productId", async (req, res) => {
 	try {
 		await Product.findByIdAndDelete(id)
 		res.json({ message: `Your product ${id} was deleted.` })
+	} catch (error) {
+		console.log(error)
+	}
+})
+
+router.put("/:productId", async (req, res, next) => {
+	try{
+		const { productName, price, image, description } = req.body
+		const id = req.params.productId
+		const productToUpdate = { productName, price, image, description } 
+		const newProduct = await Product.findByIdAndUpdate(id,productToUpdate, {new: true})
+
+		res.json(newProduct)
 	} catch (error) {
 		console.log(error)
 	}
